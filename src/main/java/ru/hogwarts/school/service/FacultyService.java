@@ -8,11 +8,13 @@ public interface FacultyService {
 
     Faculty add(Faculty faculty);
 
-    Faculty remove(Faculty faculty);
+    Faculty remove(String name);
 
     Faculty update(Faculty faculty);
 
     Faculty get(String name);
 
     Collection<Faculty> getAll();
+
+    Collection<Faculty> getByColor(String color);
 }
