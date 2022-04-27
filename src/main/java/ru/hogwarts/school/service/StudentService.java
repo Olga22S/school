@@ -8,11 +8,11 @@ public interface StudentService {
 
     Student add(Student student);
 
-    Student remove(String name);
+    Student remove(Long id);
 
     Student update(Student student);
 
-    Student get(String name);
+    Student get(Long id);
 
     Collection<Student> getAll();
 

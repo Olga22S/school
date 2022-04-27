@@ -1,8 +1,8 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.exeption.FacultyExistsException;
 import ru.hogwarts.exeption.FacultyNotFoundException;
+import ru.hogwarts.exeption.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 
 import java.util.Collection;
@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -19,19 +21,19 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty add(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            throw new FacultyExistsException();
-        }
-        faculties.put(faculty.getId(), faculty);
         counter++;
+        faculty.setId(counter);
+        faculties.put(counter, faculty);
         return faculty;
     }
 
     @Override
-    public Faculty remove(String name) {
-        Faculty faculty = this.get(name);
-        counter--;
-        return faculties.remove(faculty.getId());
+    public Faculty remove(Long id) {
+        Faculty faculty = faculties.remove(id);
+        if (isNull(faculty)) {
+            throw new FacultyNotFoundException();
+        }
+        return faculty;
     }
 
     @Override
@@ -44,11 +46,12 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty get(String name) {
-        return faculties.values().stream()
-                .filter(faculty -> faculty.getName().equals(name))
-                .findFirst()
-                .orElseThrow(FacultyNotFoundException::new);
+    public Faculty get(Long id) {
+        Faculty faculty = faculties.get(id);
+        if (isNull(faculty)) {
+            throw new StudentNotFoundException();
+        }
+        return faculty;
     }
 
     @Override

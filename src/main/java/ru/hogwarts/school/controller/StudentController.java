@@ -16,14 +16,14 @@ public class StudentController {
         this.service = service;
     }
 
-    @GetMapping("/{name}")
-    public Student getStudent(@PathVariable String name) {
-        return service.get(name);
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable long id) {
+        return service.get(id);
     }
 
-    @DeleteMapping("/{name}")
-    public Student removeStudent(@PathVariable String name) {
-        return service.remove(name);
+    @DeleteMapping("/{id}")
+    public Student removeStudent(@PathVariable long id) {
+        return service.remove(id);
     }
 
     @PostMapping

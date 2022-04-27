@@ -6,12 +6,11 @@ public class Faculty {
 
     private Long id;
     private String name;
-    private String Color;
+    private String color;
 
-    public Faculty(Long id, String name, String color) {
-        this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
-        Color = color;
+        this.color = color;
     }
 
     public Long getId() {
@@ -31,11 +30,11 @@ public class Faculty {
     }
 
     public String getColor() {
-        return Color;
+        return color;
     }
 
     public void setColor(String color) {
-        Color = color;
+        this.color = color;
     }
 
     @Override
@@ -47,12 +46,12 @@ public class Faculty {
             return false;
         }
         Faculty faculty = (Faculty) o;
-        return id.equals(faculty.id) && name.equals(faculty.name) && Color.equals(faculty.Color);
+        return id.equals(faculty.id) && name.equals(faculty.name) && color.equals(faculty.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, Color);
+        return Objects.hash(id, name, color);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class Faculty {
         return "Faculty{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", Color='" + Color + '\'' +
+                ", Color='" + color + '\'' +
                 '}';
     }
 }

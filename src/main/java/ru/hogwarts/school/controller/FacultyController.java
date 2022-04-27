@@ -16,14 +16,14 @@ public class FacultyController {
         this.service = service;
     }
 
-    @GetMapping("/{name}")
-    public Faculty getFaculty(@PathVariable String name) {
-        return service.get(name);
+    @GetMapping("/{id}")
+    public Faculty getFaculty(@PathVariable long id) {
+        return service.get(id);
     }
 
-    @DeleteMapping("/{name}")
-    public Faculty removeFaculty(@PathVariable String name) {
-        return service.remove(name);
+    @DeleteMapping("/{id}")
+    public Faculty removeFaculty(@PathVariable long id) {
+        return service.remove(id);
     }
 
     @PostMapping
