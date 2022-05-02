@@ -22,8 +22,8 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public Student removeStudent(@PathVariable long id) {
-        return service.remove(id);
+    public void removeStudent(@PathVariable long id) {
+        service.remove(id);
     }
 
     @PostMapping

@@ -22,8 +22,8 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    public Faculty removeFaculty(@PathVariable long id) {
-        return service.remove(id);
+    public void removeFaculty(@PathVariable long id) {
+        service.remove(id);
     }
 
     @PostMapping
