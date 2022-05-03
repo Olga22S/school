@@ -1,67 +1,48 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.exeption.StudentNotFoundException;
+import ru.hogwarts.school.exeption.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private final Map<Long, Student> students = new HashMap<>();
-    private long counter;
+    private final StudentRepository repository;
 
-    @Override
-    public Student add(Student student) {
-        counter++;
-        student.setId(counter);
-        students.put(counter, student);
-        return student;
+    public StudentServiceImpl(StudentRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Student remove(Long id) {
-        Student student = students.remove(id);
-        if (isNull(student)) {
-            throw new StudentNotFoundException();
-        }
-        return student;
+    public Student add(Student student) {
+        return repository.save(student);
+    }
+
+    @Override
+    public void remove(Long id) {
+        repository.deleteById(id);
     }
 
     @Override
     public Student update(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(), student);
-            return student;
-        }
-        throw new StudentNotFoundException();
+        return repository.save(student);
     }
 
     @Override
     public Student get(Long id) {
-        Student student = students.get(id);
-        if (isNull(student)) {
-            throw new StudentNotFoundException();
-        }
-        return student;
+        return repository.findById(id).orElseThrow(StudentNotFoundException::new);
     }
 
     @Override
     public Collection<Student> getAll() {
-        return Collections.unmodifiableCollection(students.values());
+        return repository.findAll();
     }
 
     @Override
     public Collection<Student> getByAge(int age) {
-        return students.values().stream()
-                .filter(student -> student.getAge() == age)
-                .collect(Collectors.toList());
+        return repository.findStudentsByAge(age);
     }
 }
