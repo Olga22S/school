@@ -15,6 +15,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByAgeBetween(int min, int max);
 
-    @Query("SELECT new Student(s.id, s.name, s.age) FROM Student s WHERE s.faculty.id = :id")
+//    @Query("SELECT new Student(s.id, s.name, s.age) FROM Student s WHERE s.faculty.id = :id")
+//    Collection<Student> getStudentsByFacultyId(long id);
+
     Collection<Student> getStudentsByFacultyId(long id);
 }
