@@ -20,9 +20,8 @@ public class AvatarController {
     }
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+    public void uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
         service.uploadAvatar(studentId, avatar);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/preview-from-db/{id}")
@@ -30,8 +29,9 @@ public class AvatarController {
         return service.downloadFromDataBase(id);
     }
 
-    @GetMapping("/preview-from-local/{id}")
-    public void downloadFromLocalDisk(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        service.downloadFromLocalDisk(id, response);
+    @GetMapping("/preview/{id}")
+    public void downloadAvatar(@PathVariable Long id, @RequestParam(required = false) String src,
+                               HttpServletResponse response) throws IOException {
+        service.downloadFromLocalDisk(id, src, response);
     }
 }

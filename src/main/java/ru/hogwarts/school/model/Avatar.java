@@ -1,5 +1,7 @@
 package ru.hogwarts.school.model;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
@@ -18,8 +20,6 @@ public class Avatar {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    public Avatar() {
-    }
 
     public Long getId() {
         return id;
@@ -74,16 +74,16 @@ public class Avatar {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Avatar)) {
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
         Avatar avatar = (Avatar) o;
-        return id.equals(avatar.id);
+        return id != null && Objects.equals(id, avatar.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 
     @Override

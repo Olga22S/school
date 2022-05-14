@@ -15,5 +15,5 @@ public interface AvatarService {
 
     ResponseEntity<byte[]> downloadFromDataBase(Long id);
 
-    void downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException;
+    void downloadFromLocalDisk(Long id, String src, HttpServletResponse response) throws IOException;
 }
