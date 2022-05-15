@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -52,5 +54,50 @@ class FacultyControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void testUpdateFaculty() throws Exception {
+        when(service.update(any(Faculty.class))).thenReturn(new Faculty());
 
+        mockMvc.perform(
+                        put("/faculty")
+                                .content(new JSONObject().toString())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetAllFaculties() throws Exception {
+        when(service.getAll()).thenReturn(List.of(new Faculty()));
+
+        mockMvc.perform(
+                        get("/faculty/all"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetFacultyByColor() throws Exception {
+        when(service.getByColor(any(String.class))).thenReturn(List.of(new Faculty()));
+
+        mockMvc.perform(
+                        get("/faculty/color?color=red"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetFacultyByName() throws Exception {
+        when(service.getFacultyByNameIgnoreCase(any(String.class))).thenReturn(new Faculty());
+
+        mockMvc.perform(
+                        get("/faculty/name?name=abc"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetFacultyByStudentId() throws Exception {
+        when(service.getFacultyByStudentId(any(Long.class))).thenReturn(new Faculty());
+
+        mockMvc.perform(
+                        get("/faculty/student?id=1"))
+                .andExpect(status().isOk());
+    }
 }
