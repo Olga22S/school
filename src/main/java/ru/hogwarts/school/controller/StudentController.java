@@ -55,4 +55,19 @@ public class StudentController {
     public Collection<Student> getStudentsByFacultyId(@RequestParam long id) {
         return service.getStudentsByFacultyId(id);
     }
+
+    @GetMapping("/student-counter")
+    public Long getNumberOfAllStudents() {
+        return service.getNumberOfAllStudents();
+    }
+
+    @GetMapping("/average-age")
+    public Integer getAverageStudentsAge() {
+        return service.getAverageStudentsAge();
+    }
+
+    @GetMapping("/last-five-students")
+    public Collection<Student> getLastFiveStudents() {
+        return service.getLastFiveStudents();
+    }
 }
