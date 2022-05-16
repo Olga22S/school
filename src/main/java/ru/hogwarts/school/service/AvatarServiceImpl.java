@@ -35,7 +35,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public ResponseEntity<Void> uploadAvatar(Long id, MultipartFile avatar) throws IOException {
+    public void uploadAvatar(Long id, MultipartFile avatar) throws IOException {
         Student student = studentService.get(id);
         Path filePath = Path.of(avatarsDir, id + "." + getExtension(avatar.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -56,7 +56,6 @@ public class AvatarServiceImpl implements AvatarService {
                 .student(student)
                 .build();
         repository.save(studentAvatar);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public interface AvatarService {
 
-    ResponseEntity<Void> uploadAvatar(Long id, MultipartFile avatar) throws IOException;
+    void uploadAvatar(Long id, MultipartFile avatar) throws IOException;
 
     Avatar getAvatarById(Long id);
 
