@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Avatar;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public interface AvatarService {
 
@@ -18,4 +19,6 @@ public interface AvatarService {
     ResponseEntity<byte[]> downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException;
 
     ResponseEntity<byte[]> downloadAvatar(Long id, Enum src, HttpServletResponse response) throws IOException;
+
+    List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize);
 }
