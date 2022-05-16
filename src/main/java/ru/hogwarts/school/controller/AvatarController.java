@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.model.Src;
 import ru.hogwarts.school.service.AvatarService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,18 +21,13 @@ public class AvatarController {
     }
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
-        service.uploadAvatar(studentId, avatar);
-    }
-
-    @GetMapping("/preview-from-db/{id}")
-    public ResponseEntity<byte[]> downloadFromDataBase(@PathVariable Long id) {
-        return service.downloadFromDataBase(id);
+    public ResponseEntity<Void> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+        return service.uploadAvatar(studentId, avatar);
     }
 
     @GetMapping("/preview/{id}")
-    public void downloadAvatar(@PathVariable Long id, @RequestParam(required = false) String src,
-                               HttpServletResponse response) throws IOException {
-        service.downloadFromLocalDisk(id, src, response);
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, @RequestParam(defaultValue = "FILE") String src,
+                                                 HttpServletResponse response) throws IOException {
+        return service.downloadAvatar(id, Src.valueOf(src), response);
     }
 }

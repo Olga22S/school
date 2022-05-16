@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
-import ru.hogwarts.school.model.AvatarBuilder;
+import ru.hogwarts.school.model.Src;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 
@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
-import static java.util.Objects.isNull;
 
 @Service
 @Transactional
@@ -36,7 +35,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public void uploadAvatar(Long id, MultipartFile avatar) throws IOException {
+    public ResponseEntity<Void> uploadAvatar(Long id, MultipartFile avatar) throws IOException {
         Student student = studentService.get(id);
         Path filePath = Path.of(avatarsDir, id + "." + getExtension(avatar.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -48,13 +47,16 @@ public class AvatarServiceImpl implements AvatarService {
             bis.transferTo(bos);
         }
         Avatar studentAvatar = findByStudentId(id);
-        new AvatarBuilder(studentAvatar)
-                .setData(avatar.getBytes())
-                .setStudent(student)
-                .setFilePath(filePath.toString())
-                .setFileSize(avatar.getSize())
-                .setMediaType(avatar.getContentType());
+        studentAvatar = Avatar.builder()
+                .id(studentAvatar.getId())
+                .filePath(filePath.toString())
+                .fileSize(avatar.getSize())
+                .mediaType(avatar.getContentType())
+                .data(avatar.getBytes())
+                .student(student)
+                .build();
         repository.save(studentAvatar);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
@@ -72,14 +74,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public void downloadFromLocalDisk(Long id, String filePath, HttpServletResponse response) throws IOException {
+    public ResponseEntity<byte[]> downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = getAvatarById(id);
-        Path path;
-        if(isNull(filePath)) {
-            path = Path.of(avatar.getFilePath());
-        }else {
-            path = Path.of(filePath);
-        }
+        Path path = Path.of(avatar.getFilePath());
         try (InputStream is = Files.newInputStream(path);
              OutputStream os = response.getOutputStream()) {
             response.setStatus(200);
@@ -87,6 +84,15 @@ public class AvatarServiceImpl implements AvatarService {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> downloadAvatar(Long id, Enum src, HttpServletResponse response) throws IOException {
+        if (src == Src.DB) {
+            return downloadFromDataBase(id);
+        }
+        return downloadFromLocalDisk(id, response);
     }
 
     private Avatar findByStudentId(Long id) {

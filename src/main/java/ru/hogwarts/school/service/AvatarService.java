@@ -9,11 +9,13 @@ import java.io.IOException;
 
 public interface AvatarService {
 
-    void uploadAvatar(Long id, MultipartFile avatar) throws IOException;
+    ResponseEntity<Void> uploadAvatar(Long id, MultipartFile avatar) throws IOException;
 
     Avatar getAvatarById(Long id);
 
+    ResponseEntity<byte[]> downloadAvatar(Long id, Enum src, HttpServletResponse response) throws IOException;
+
     ResponseEntity<byte[]> downloadFromDataBase(Long id);
 
-    void downloadFromLocalDisk(Long id, String src, HttpServletResponse response) throws IOException;
+    ResponseEntity<byte[]> downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException;
 }

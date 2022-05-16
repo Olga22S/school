@@ -97,4 +97,62 @@ public class Avatar {
                 ", student=" + student +
                 '}';
     }
+
+    public static AvatarBuilder builder() {
+        return new AvatarBuilder();
+    }
+
+    public static class AvatarBuilder {
+
+        private Long id;
+        private String filePath;
+        private long fileSize;
+        private String mediaType;
+        private byte[] data;
+        private Student student;
+
+        private AvatarBuilder() {
+        }
+
+        public AvatarBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public AvatarBuilder filePath(String filePath) {
+            this.filePath = filePath;
+            return this;
+        }
+
+        public AvatarBuilder fileSize(long fileSize) {
+            this.fileSize = fileSize;
+            return this;
+        }
+
+        public AvatarBuilder mediaType(String mediaType) {
+            this.mediaType = mediaType;
+            return this;
+        }
+
+        public AvatarBuilder data(byte[] data) {
+            this.data = data;
+            return this;
+        }
+
+        public AvatarBuilder student(Student student) {
+            this.student = student;
+            return this;
+        }
+
+        public Avatar build() {
+            Avatar avatar = new Avatar();
+            avatar.setId(id);
+            avatar.setFilePath(filePath);
+            avatar.setFileSize(fileSize);
+            avatar.setMediaType(mediaType);
+            avatar.setData(data);
+            avatar.setStudent(student);
+            return avatar;
+        }
+    }
 }
