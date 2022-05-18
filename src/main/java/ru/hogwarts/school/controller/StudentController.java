@@ -41,12 +41,12 @@ public class StudentController {
         return service.getAll();
     }
 
-    @GetMapping("/age")
+    @GetMapping(value = "/age", params = {"age"})
     public Collection<Student> getStudentsByAge(@RequestParam int age) {
         return service.getByAge(age);
     }
 
-    @GetMapping("/age/")
+    @GetMapping(value = "/age", params = {"min", "max"})
     public Collection<Student> getStudentsByAgeBetween(@RequestParam int min, @RequestParam int max) {
         return service.findByAgeBetween(min, max);
     }
@@ -54,5 +54,20 @@ public class StudentController {
     @GetMapping("/faculty")
     public Collection<Student> getStudentsByFacultyId(@RequestParam long id) {
         return service.getStudentsByFacultyId(id);
+    }
+
+    @GetMapping("/student-counter")
+    public Long getNumberOfAllStudents() {
+        return service.getNumberOfAllStudents();
+    }
+
+    @GetMapping("/average-age")
+    public Integer getAverageStudentsAge() {
+        return service.getAverageStudentsAge();
+    }
+
+    @GetMapping("/last-five-students")
+    public Collection<Student> getLastFiveStudents() {
+        return service.getLastFiveStudents();
     }
 }
