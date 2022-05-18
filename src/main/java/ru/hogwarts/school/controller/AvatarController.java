@@ -24,13 +24,14 @@ public class AvatarController {
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
-        return service.uploadAvatar(studentId, avatar);
+        service.uploadAvatar(studentId, avatar);
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/preview/{id}")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, @RequestParam(defaultValue = "FILE") String src,
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, @RequestParam(defaultValue = "FILE") Src src,
                                                  HttpServletResponse response) throws IOException {
-        return service.downloadAvatar(id, Src.valueOf(src), response);
+        return service.downloadAvatar(id, src, response);
     }
 
     @GetMapping
