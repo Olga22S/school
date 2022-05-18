@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -57,7 +59,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar getAvatarById(Long id) {
-        return repository.getById(id);
+        return repository.findById(id).get();
     }
 
     @Override
@@ -89,6 +91,12 @@ public class AvatarServiceImpl implements AvatarService {
             return downloadFromDataBase(id);
         }
         return downloadFromLocalDisk(id, response);
+    }
+
+    @Override
+    public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        return repository.findAll(pageRequest).getContent();
     }
 
     private Avatar findByStudentId(Long id) {
