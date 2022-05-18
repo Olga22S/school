@@ -15,11 +15,11 @@ public interface AvatarService {
 
     Avatar getAvatarById(Long id);
 
+    ResponseEntity<byte[]> downloadAvatar(Long id, Src src, HttpServletResponse response) throws IOException;
+
     ResponseEntity<byte[]> downloadFromDataBase(Long id);
 
     ResponseEntity<byte[]> downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException;
-
-    ResponseEntity<byte[]> downloadAvatar(Long id, Src src, HttpServletResponse response) throws IOException;
 
     List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize);
 }
