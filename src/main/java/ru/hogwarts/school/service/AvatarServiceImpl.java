@@ -47,14 +47,11 @@ public class AvatarServiceImpl implements AvatarService {
             bis.transferTo(bos);
         }
         Avatar studentAvatar = findByStudentId(id);
-        studentAvatar = Avatar.builder()
-                .id(studentAvatar.getId())
-                .filePath(filePath.toString())
-                .fileSize(avatar.getSize())
-                .mediaType(avatar.getContentType())
-                .data(avatar.getBytes())
-                .student(student)
-                .build();
+        studentAvatar.setStudent(student);
+        studentAvatar.setFilePath(filePath.toString());
+        studentAvatar.setFileSize(avatar.getSize());
+        studentAvatar.setMediaType(avatar.getContentType());
+        studentAvatar.setData(avatar.getBytes());
         repository.save(studentAvatar);
     }
 
@@ -87,7 +84,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadAvatar(Long id, Enum src, HttpServletResponse response) throws IOException {
+    public ResponseEntity<byte[]> downloadAvatar(Long id, Src src, HttpServletResponse response) throws IOException {
         if (src == Src.DB) {
             return downloadFromDataBase(id);
         }

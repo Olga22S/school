@@ -27,8 +27,8 @@ public class AvatarController {
     }
 
     @GetMapping("/preview/{id}")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, @RequestParam(defaultValue = "FILE") String src,
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, @RequestParam(defaultValue = "FILE") Src src,
                                                  HttpServletResponse response) throws IOException {
-        return service.downloadAvatar(id, Src.valueOf(src), response);
+        return service.downloadAvatar(id, src, response);
     }
 }
