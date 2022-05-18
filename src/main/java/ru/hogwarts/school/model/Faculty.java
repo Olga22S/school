@@ -1,9 +1,13 @@
 package ru.hogwarts.school.model;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Faculty {
@@ -13,8 +17,18 @@ public class Faculty {
     private Long id;
     private String name;
     private String color;
+    @OneToMany(mappedBy = "faculty")
+    private Set<Student> students;
 
     public Faculty() {
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     public Long getId() {
@@ -43,19 +57,19 @@ public class Faculty {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof Faculty)){
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
         Faculty faculty = (Faculty) o;
-        return id.equals(faculty.id) && name.equals(faculty.name) && color.equals(faculty.color);
+        return id != null && Objects.equals(id, faculty.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color);
+        return getClass().hashCode();
     }
 
     @Override
