@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ import ru.hogwarts.school.service.FacultyService;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(FacultyController.class)
 class FacultyControllerTest {
@@ -28,11 +30,15 @@ class FacultyControllerTest {
 
     @Test
     public void testGetFaculty() throws Exception {
-        when(service.get(any(Long.class))).thenReturn(new Faculty());
+        Long id = 1L;
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        when(service.get(id)).thenReturn(faculty);
 
         mockMvc.perform(
-                        get("/faculty/{id}", 1))
-                .andExpect(status().isOk());
+                        get("/faculty/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id));
     }
 
     @Test
@@ -40,29 +46,51 @@ class FacultyControllerTest {
         mockMvc.perform(
                         delete("/faculty/{id}", 1))
                 .andExpect(status().isOk());
+        verify(service).remove(1L);
     }
 
     @Test
     public void testAddFaculty() throws Exception {
-        when(service.add(any(Faculty.class))).thenReturn(new Faculty());
+        Long id = 1L;
+        String name = "Nice";
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
         JSONObject userObject = new JSONObject();
+        userObject.put("id", id);
+        userObject.put("name", name);
+
+        when(service.add(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(
                         post("/faculty")
                                 .content(userObject.toString())
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(userObject.toString()));
+        verify(service).add(faculty);
     }
 
     @Test
     public void testUpdateFaculty() throws Exception {
-        when(service.update(any(Faculty.class))).thenReturn(new Faculty());
+        Long id = 1L;
+        String name = "Nice";
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        JSONObject userObject = new JSONObject();
+        userObject.put("id", id);
+        userObject.put("name", name);
+
+        when(service.update(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(
                         put("/faculty")
-                                .content(new JSONObject().toString())
+                                .content(userObject.toString())
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(userObject.toString()));
+        verify(service).update(faculty);
     }
 
     @Test
@@ -76,28 +104,55 @@ class FacultyControllerTest {
 
     @Test
     public void testGetFacultyByColor() throws Exception {
-        when(service.getByColor(any(String.class))).thenReturn(List.of(new Faculty()));
+        Faculty faculty = new Faculty();
+        faculty.setId(1L);
+        faculty.setColor("красный");
+        List<Faculty> faculties = List.of(faculty);
+        JSONObject userObject = new JSONObject();
+        userObject.put("id", 1L);
+        userObject.put("color", "красный");
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(userObject);
+
+        when(service.getByColor("красный")).thenReturn(faculties);
 
         mockMvc.perform(
-                        get("/faculty/color?color=red"))
-                .andExpect(status().isOk());
+                        get("/faculty/color?color=красный"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonArray.toString()));
     }
 
     @Test
     public void testGetFacultyByName() throws Exception {
-        when(service.getFacultyByNameIgnoreCase(any(String.class))).thenReturn(new Faculty());
+        Faculty faculty = new Faculty();
+        faculty.setId(1L);
+        faculty.setName("Nice");
+        JSONObject userObject = new JSONObject();
+        userObject.put("id", 1L);
+        userObject.put("name", "Nice");
+
+        when(service.getFacultyByNameIgnoreCase("Nice")).thenReturn(faculty);
 
         mockMvc.perform(
-                        get("/faculty/name?name=abc"))
-                .andExpect(status().isOk());
+                        get("/faculty/name?name=Nice"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(userObject.toString()));
     }
 
     @Test
     public void testGetFacultyByStudentId() throws Exception {
-        when(service.getFacultyByStudentId(any(Long.class))).thenReturn(new Faculty());
+        Faculty faculty = new Faculty();
+        faculty.setId(1L);
+        faculty.setName("Nice");
+        JSONObject userObject = new JSONObject();
+        userObject.put("id", 1L);
+        userObject.put("name", "Nice");
+
+        when(service.getFacultyByStudentId(any(Long.class))).thenReturn(faculty);
 
         mockMvc.perform(
                         get("/faculty/student?id=1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(userObject.toString()));
     }
 }
