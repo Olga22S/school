@@ -104,17 +104,19 @@ class FacultyControllerTest {
 
     @Test
     public void testGetFacultyByColor() throws Exception {
+        Long id = 1L;
+        String color = "красный";
         Faculty faculty = new Faculty();
-        faculty.setId(1L);
-        faculty.setColor("красный");
+        faculty.setId(id);
+        faculty.setColor(color);
         List<Faculty> faculties = List.of(faculty);
         JSONObject userObject = new JSONObject();
-        userObject.put("id", 1L);
-        userObject.put("color", "красный");
+        userObject.put("id", id);
+        userObject.put("color", color);
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(userObject);
 
-        when(service.getByColor("красный")).thenReturn(faculties);
+        when(service.getByColor(color)).thenReturn(faculties);
 
         mockMvc.perform(
                         get("/faculty/color?color=красный"))
@@ -124,6 +126,7 @@ class FacultyControllerTest {
 
     @Test
     public void testGetFacultyByName() throws Exception {
+
         Faculty faculty = new Faculty();
         faculty.setId(1L);
         faculty.setName("Nice");
@@ -141,12 +144,14 @@ class FacultyControllerTest {
 
     @Test
     public void testGetFacultyByStudentId() throws Exception {
+        Long id = 1L;
+        String name = "Nice";
         Faculty faculty = new Faculty();
-        faculty.setId(1L);
-        faculty.setName("Nice");
+        faculty.setId(id);
+        faculty.setName(name);
         JSONObject userObject = new JSONObject();
-        userObject.put("id", 1L);
-        userObject.put("name", "Nice");
+        userObject.put("id", id);
+        userObject.put("name", name);
 
         when(service.getFacultyByStudentId(any(Long.class))).thenReturn(faculty);
 

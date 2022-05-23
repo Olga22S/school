@@ -40,8 +40,8 @@ class StudentControllerTest {
         ResponseEntity<Student> response = restTemplate.getForEntity(
                 "http://localhost:" + port + "/hogwarts/student/1", Student.class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getId(), 1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getId());
     }
 
     @Test
@@ -49,7 +49,7 @@ class StudentControllerTest {
         ResponseEntity<Student[]> response = restTemplate.getForEntity(
                 "http://localhost:" + port + "/hogwarts/student/all", Student[].class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -57,7 +57,7 @@ class StudentControllerTest {
         ResponseEntity<Student[]> response = restTemplate.getForEntity(
                 "http://localhost:" + port + "/hogwarts/student/age?age=21", Student[].class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(Arrays.stream(response.getBody())
                 .allMatch(student -> student.getAge() == 21));
     }
@@ -67,7 +67,7 @@ class StudentControllerTest {
         ResponseEntity<Student[]> response = restTemplate.getForEntity(
                 "http://localhost:" + port + "/hogwarts/student/age/?min=21&max=22", Student[].class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(Arrays.stream(response.getBody())
                 .allMatch(student -> student.getAge() == 21 || student.getAge() == 22));
     }
@@ -77,7 +77,7 @@ class StudentControllerTest {
         ResponseEntity<Student[]> response = restTemplate.getForEntity(
                 "http://localhost:" + port + "/hogwarts/student/faculty?id=1", Student[].class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -87,7 +87,7 @@ class StudentControllerTest {
 
         ResponseEntity<Student> response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/hogwarts/student", student, Student.class);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().getName().equals("Kirill"));
     }
 
@@ -98,7 +98,7 @@ class StudentControllerTest {
 
         ResponseEntity<Student> response = restTemplate.exchange(
                 "http://localhost:" + port + "/hogwarts/student", HttpMethod.PUT, entity, Student.class);
-        assertThat(response.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
