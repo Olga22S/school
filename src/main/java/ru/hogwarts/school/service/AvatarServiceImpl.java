@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     private final AvatarRepository repository;
     private final StudentService studentService;
+    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
@@ -38,6 +41,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public void uploadAvatar(Long id, MultipartFile avatar) throws IOException {
+        logger.info("Was invoked method for upload avatar");
         Student student = studentService.get(id);
         Path filePath = Path.of(avatarsDir, id + "." + getExtension(avatar.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -59,11 +63,13 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar getAvatarById(Long id) {
+        logger.info("Was invoked method to get avatar by id={}", id);
         return repository.findById(id).get();
     }
 
     @Override
     public ResponseEntity<byte[]> downloadFromDataBase(Long id) {
+        logger.info("Download avatar from db");
         Avatar avatar = getAvatarById(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentLength(avatar.getData().length)
@@ -73,6 +79,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public ResponseEntity<byte[]> downloadFromLocalDisk(Long id, HttpServletResponse response) throws IOException {
+        logger.info("Download avatar from local disk");
         Avatar avatar = getAvatarById(id);
         Path path = Path.of(avatar.getFilePath());
         try (InputStream is = Files.newInputStream(path);
@@ -87,6 +94,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public ResponseEntity<byte[]> downloadAvatar(Long id, Src src, HttpServletResponse response) throws IOException {
+        logger.info("Was invoked method for download avatar");
         if (src == Src.DB) {
             return downloadFromDataBase(id);
         }
@@ -95,6 +103,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        logger.info("Was invoked method for getting all avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return repository.findAll(pageRequest).getContent();
     }
