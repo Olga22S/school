@@ -89,11 +89,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<String> getStudentsNameBeginsWithLetter(char letter) {
+        logger.info("Was invoked method to get the names begins with letter={}", letter);
         return repository.findAll().stream()
                 .parallel()
                 .filter(student -> student.getName().startsWith(String.valueOf(letter)))
                 .map(student -> student.getName().toUpperCase())
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer getStudentAverageAgeUsingStream() {
+        logger.info("Was invoked method to get average age using stream");
+        Double age = repository.findAll().stream().parallel()
+                .mapToInt(Student::getAge)
+                .average().getAsDouble();
+        return age.intValue();
     }
 }

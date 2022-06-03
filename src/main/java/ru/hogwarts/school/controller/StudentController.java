@@ -75,4 +75,9 @@ public class StudentController {
     public Collection<String> getStudentsNamesBeginsWithLetter(@RequestParam char letter){
         return service.getStudentsNameBeginsWithLetter(letter);
     }
+
+    @GetMapping("/average-age-stream")
+    public Integer getStudentAverageAgeUsingStream(){
+        return service.getStudentAverageAgeUsingStream();
+    }
 }

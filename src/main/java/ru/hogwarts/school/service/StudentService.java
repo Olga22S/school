@@ -30,4 +30,6 @@ public interface StudentService {
     Collection<Student> getLastFiveStudents();
 
     List<String> getStudentsNameBeginsWithLetter(char letter);
+
+    Integer getStudentAverageAgeUsingStream();
 }
