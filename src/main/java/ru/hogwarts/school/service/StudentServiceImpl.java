@@ -8,6 +8,8 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -83,5 +85,15 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getLastFiveStudents() {
         logger.info("Was invoked method to get the last five students");
         return repository.getLastFiveStudents();
+    }
+
+    @Override
+    public List<String> getStudentsNameBeginsWithLetter(char letter) {
+        return repository.findAll().stream()
+                .parallel()
+                .filter(student -> student.getName().startsWith(String.valueOf(letter)))
+                .map(student -> student.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

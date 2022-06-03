@@ -70,4 +70,9 @@ public class StudentController {
     public Collection<Student> getLastFiveStudents() {
         return service.getLastFiveStudents();
     }
+
+    @GetMapping("/name-with-letter")
+    public Collection<String> getStudentsNamesBeginsWithLetter(@RequestParam char letter){
+        return service.getStudentsNameBeginsWithLetter(letter);
+    }
 }
