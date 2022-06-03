@@ -80,4 +80,9 @@ public class StudentController {
     public Integer getStudentAverageAgeUsingStream(){
         return service.getStudentAverageAgeUsingStream();
     }
+
+    @GetMapping("/iterate")
+    public Integer getIterate(){
+        return service.getIterate();
+    }
 }

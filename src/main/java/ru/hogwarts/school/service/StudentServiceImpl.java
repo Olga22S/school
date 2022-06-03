@@ -10,6 +10,9 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.IntStream.iterate;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -105,5 +108,12 @@ public class StudentServiceImpl implements StudentService {
                 .mapToInt(Student::getAge)
                 .average().getAsDouble();
         return age.intValue();
+    }
+
+    @Override
+    public Integer getIterate() {
+        return Stream.iterate(1, a -> a +1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
     }
 }

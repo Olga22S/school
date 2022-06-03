@@ -32,4 +32,6 @@ public interface StudentService {
     List<String> getStudentsNameBeginsWithLetter(char letter);
 
     Integer getStudentAverageAgeUsingStream();
+
+    Integer getIterate();
 }
