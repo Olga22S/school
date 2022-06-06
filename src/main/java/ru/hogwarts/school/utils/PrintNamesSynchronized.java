@@ -14,7 +14,7 @@ public class PrintNamesSynchronized implements Runnable {
         this.students = students;
         this.startedIndex = startedIndex;
     }
-
+//
     @Override
     public void run() {
         synchronized (students) {

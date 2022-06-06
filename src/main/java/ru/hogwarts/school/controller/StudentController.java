@@ -95,7 +95,7 @@ public class StudentController {
     public void printStudentsName() {
         service.printStudentsName();
     }
-//
+
     @GetMapping("/names-in-console-synchronized")
     public void printStudentsNameSynchronized() {
         service.printStudentsNameSynchronized();
