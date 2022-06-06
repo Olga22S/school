@@ -90,4 +90,9 @@ public class StudentController {
     public void printNames() {
         service.printStudentsName();
     }
+
+    @GetMapping("/names-in-console")
+    public void printStudentsName() {
+        service.printStudentsName();
+    }
 }
