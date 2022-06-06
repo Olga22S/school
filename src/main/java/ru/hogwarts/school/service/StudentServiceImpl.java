@@ -131,7 +131,7 @@ public class StudentServiceImpl implements StudentService {
             }).start();
         }).start();
     }
-
+//
     @Override
     public void printStudentsNameSynchronized() {
         List<Student> students = repository.findAll();
