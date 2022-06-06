@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.utils.PrintNamesSynchronized;
 
 import java.util.Collection;
 import java.util.List;
@@ -129,5 +130,13 @@ public class StudentServiceImpl implements StudentService {
                 System.out.println(students.get(5).getName());
             }).start();
         }).start();
+    }
+
+    @Override
+    public void printStudentsNameSynchronized() {
+        List<Student> students = repository.findAll();
+        for (int i = 0; i < 6; i += 2) {
+            new PrintNamesSynchronized(students, i).run();
+        }
     }
 }

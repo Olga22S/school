@@ -36,4 +36,6 @@ public interface StudentService {
     Integer getIterating();
 
     void printStudentsName();
+
+    void printStudentsNameSynchronized();
 }
