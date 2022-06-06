@@ -31,7 +31,9 @@ public interface StudentService {
 
     List<String> getStudentsNameBeginsWithLetter(char letter);
 
-    Integer getStudentAverageAgeUsingStream();
+    Double getStudentAverageAgeUsingStream();
 
-    Integer getIterate();
+    Integer getIterating();
+
+    void printStudentsName();
 }

@@ -77,12 +77,17 @@ public class StudentController {
     }
 
     @GetMapping("/average-age-stream")
-    public Integer getStudentAverageAgeUsingStream(){
+    public Double getStudentAverageAgeUsingStream() {
         return service.getStudentAverageAgeUsingStream();
     }
 
     @GetMapping("/iterate")
-    public Integer getIterate(){
-        return service.getIterate();
+    public Integer getIterating() {
+        return service.getIterating();
+    }
+
+    @GetMapping("/names")
+    public void printNames() {
+        service.printStudentsName();
     }
 }

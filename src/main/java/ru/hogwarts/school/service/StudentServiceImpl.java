@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.IntStream.iterate;
-
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -102,18 +100,34 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Integer getStudentAverageAgeUsingStream() {
+    public Double getStudentAverageAgeUsingStream() {
         logger.info("Was invoked method to get average age using stream");
-        Double age = repository.findAll().stream().parallel()
+        return repository.findAll().stream()
+                .parallel()
                 .mapToInt(Student::getAge)
-                .average().getAsDouble();
-        return age.intValue();
+                .average()
+                .getAsDouble();
     }
 
     @Override
-    public Integer getIterate() {
-        return Stream.iterate(1, a -> a +1)
+    public Integer getIterating() {
+        return Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0, Integer::sum);
+    }
+
+    @Override
+    public void printStudentsName() {
+        List<Student> students = repository.findAll();
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+            new Thread(() -> {
+                System.out.println(students.get(4).getName());
+                System.out.println(students.get(5).getName());
+            }).start();
+        }).start();
     }
 }

@@ -70,7 +70,8 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public String getLongestFacultyName() {
         logger.info("Was invoked method to get the longest faculty name");
-        return repository.findAll().stream().parallel()
+        return repository.findAll().stream()
+                .parallel()
                 .map(Faculty::getName)
                 .reduce("", (left, right) -> left.length() > right.length() ? left : right);
     }
