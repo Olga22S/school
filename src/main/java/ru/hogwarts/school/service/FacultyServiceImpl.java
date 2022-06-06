@@ -66,4 +66,13 @@ public class FacultyServiceImpl implements FacultyService {
         logger.info("Was invoked method to get a faculty by student id={}", id);
         return repository.findFacultyByStudentsId(id);
     }
+
+    @Override
+    public String getLongestFacultyName() {
+        logger.info("Was invoked method to get the longest faculty name");
+        return repository.findAll().stream()
+                .parallel()
+                .map(Faculty::getName)
+                .reduce("", (left, right) -> left.length() > right.length() ? left : right);
+    }
 }

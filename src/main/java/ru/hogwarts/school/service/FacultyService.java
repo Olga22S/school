@@ -21,4 +21,6 @@ public interface FacultyService {
     Faculty getFacultyByNameIgnoreCase(String name);
 
     Faculty getFacultyByStudentId(long id);
+
+    String getLongestFacultyName();
 }

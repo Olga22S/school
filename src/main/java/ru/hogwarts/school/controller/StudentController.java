@@ -70,4 +70,24 @@ public class StudentController {
     public Collection<Student> getLastFiveStudents() {
         return service.getLastFiveStudents();
     }
+
+    @GetMapping("/name-with-letter")
+    public Collection<String> getStudentsNamesBeginsWithLetter(@RequestParam char letter){
+        return service.getStudentsNameBeginsWithLetter(letter);
+    }
+
+    @GetMapping("/average-age-stream")
+    public Double getStudentAverageAgeUsingStream() {
+        return service.getStudentAverageAgeUsingStream();
+    }
+
+    @GetMapping("/iterate")
+    public Integer getIterating() {
+        return service.getIterating();
+    }
+
+    @GetMapping("/names")
+    public void printNames() {
+        service.printStudentsName();
+    }
 }

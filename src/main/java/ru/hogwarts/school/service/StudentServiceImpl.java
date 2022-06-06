@@ -8,6 +8,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -83,5 +86,48 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getLastFiveStudents() {
         logger.info("Was invoked method to get the last five students");
         return repository.getLastFiveStudents();
+    }
+
+    @Override
+    public List<String> getStudentsNameBeginsWithLetter(char letter) {
+        logger.info("Was invoked method to get the names begins with letter={}", letter);
+        return repository.findAll().stream()
+                .parallel()
+                .filter(student -> student.getName().startsWith(String.valueOf(letter)))
+                .map(student -> student.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getStudentAverageAgeUsingStream() {
+        logger.info("Was invoked method to get average age using stream");
+        return repository.findAll().stream()
+                .parallel()
+                .mapToInt(Student::getAge)
+                .average()
+                .getAsDouble();
+    }
+
+    @Override
+    public Integer getIterating() {
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+    }
+
+    @Override
+    public void printStudentsName() {
+        List<Student> students = repository.findAll();
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+            new Thread(() -> {
+                System.out.println(students.get(4).getName());
+                System.out.println(students.get(5).getName());
+            }).start();
+        }).start();
     }
 }
