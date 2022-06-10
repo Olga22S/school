@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.utils.PrintNamesSynchronized;
 
 import java.util.Collection;
 import java.util.List;
@@ -114,5 +115,28 @@ public class StudentServiceImpl implements StudentService {
         return Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
                 .reduce(0, Integer::sum);
+    }
+
+    @Override
+    public void printStudentsName() {
+        List<Student> students = repository.findAll();
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+            new Thread(() -> {
+                System.out.println(students.get(4).getName());
+                System.out.println(students.get(5).getName());
+            }).start();
+        }).start();
+    }
+
+    @Override
+    public void printStudentsNameSynchronized() {
+        List<Student> students = repository.findAll();
+        for (int i = 0; i < students.size(); i += 2) {
+            new Thread(new PrintNamesSynchronized(students, i)).start();
+        }
     }
 }

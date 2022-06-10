@@ -34,4 +34,8 @@ public interface StudentService {
     Double getStudentAverageAgeUsingStream();
 
     Integer getIterating();
+
+    void printStudentsName();
+
+    void printStudentsNameSynchronized();
 }
