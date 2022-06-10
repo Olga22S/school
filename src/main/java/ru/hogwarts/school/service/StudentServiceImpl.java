@@ -135,8 +135,8 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void printStudentsNameSynchronized() {
         List<Student> students = repository.findAll();
-        for (int i = 0; i < 6; i += 2) {
-            new PrintNamesSynchronized(students, i).run();
+        for (int i = 0; i < students.size(); i += 2) {
+            new Thread(new PrintNamesSynchronized(students, i)).start();
         }
     }
 }

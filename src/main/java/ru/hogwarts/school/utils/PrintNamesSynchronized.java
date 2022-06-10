@@ -17,9 +17,8 @@ public class PrintNamesSynchronized implements Runnable {
     @Override
     public void run() {
         synchronized (students) {
-            for (int i = startedIndex; i <= startedIndex + 1; i++) {
-                System.out.println(students.get(i).getName());
-            }
+            System.out.println(students.get(startedIndex).getName());
+            System.out.println(students.get(startedIndex + 1).getName());
         }
     }
 }
